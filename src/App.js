@@ -19,6 +19,11 @@ function App() {
       <Router>
         <AuthContextProvider>
           <Header />
+          <Container maxWidth="md">
+            <Routes>
+              <Route path="/account/sign-in" element={<SignInPage />} />
+            </Routes>
+          </Container>
         </AuthContextProvider>
       </Router>
       <GlobalStyles
