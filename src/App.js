@@ -1,24 +1,34 @@
-import logo from './logo.svg';
-import './App.css';
+import { QueryClient, QueryClientProvider } from "react-query";
+import { Routes, Route, Link, BrowserRouter as Router } from "react-router-dom";
+import { GlobalStyles, Container, CssBaseline } from "@mui/material";
+import "react-toastify/dist/ReactToastify.css";
+
+import HomePage from "./pages/Home";
+import Header from "./components/Header";
+import AuthContextProvider from "./contexts/AuthContext";
+import SignInPage from "./pages/SignIn";
+import { ToastContainer } from "react-toastify";
+
+const queryClient = new QueryClient({
+  defaultOptions: { queries: { refetchOnWindowFocus: false } },
+});
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <QueryClientProvider client={queryClient}>
+      <Router>
+        <AuthContextProvider>
+          <Header />
+        </AuthContextProvider>
+      </Router>
+      <GlobalStyles
+        styles={{
+          a: { textDecoration: "none", font: "inherit", color: "inherit" },
+        }}
+      />
+      <CssBaseline />
+      <ToastContainer />
+    </QueryClientProvider>
   );
 }
 
