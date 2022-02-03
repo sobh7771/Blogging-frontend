@@ -28,6 +28,14 @@ const Login = gql`
   }
 `;
 
+const Logout = gql`
+  mutation Logot {
+    logout {
+      _id
+    }
+  }
+`;
+
 export const AuthContext = React.createContext(defaultValue);
 
 function AuthContextProvider({ children }) {
@@ -73,7 +81,11 @@ function AuthContextProvider({ children }) {
     }
   };
 
-  const logout = async () => {};
+  const logout = async () => {
+    await request("/graphql", Logout);
+    setUser({ isSignedIn: false, user: null });
+    navigate("/");
+  };
 
   const value = useMemo(() => ({ user, login, logout }), [user]);
 

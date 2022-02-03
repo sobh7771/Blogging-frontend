@@ -1,9 +1,14 @@
 import React, { useContext } from "react";
 import { Button } from "@mui/material";
 import LogoutIcon from "@mui/icons-material/Logout";
+import { AuthContext } from "../contexts/AuthContext";
 
 const LogoutButton = () => {
-  const handleClick = async () => {};
+  const { logout } = useContext(AuthContext);
+
+  const handleClick = async () => {
+    logout();
+  };
 
   return (
     <Button
