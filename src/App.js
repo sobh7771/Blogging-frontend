@@ -22,6 +22,7 @@ function App() {
           <Container maxWidth="md">
             <Routes>
               <Route path="/account/sign-in" element={<SignInPage />} />
+              <Route path="/" element={<HomePage />} />;
             </Routes>
           </Container>
         </AuthContextProvider>
