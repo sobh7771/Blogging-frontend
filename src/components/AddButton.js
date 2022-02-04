@@ -4,6 +4,7 @@ import { ButtonBase } from "@mui/material";
 import { alpha, styled } from "@mui/material/styles";
 
 import AddIcon from "@mui/icons-material/Add";
+import { Link } from "react-router-dom";
 
 const RoundedButton = styled(ButtonBase)(({ theme }) => ({
   backgroundColor: theme.palette.secondary.main,
@@ -15,9 +16,11 @@ const RoundedButton = styled(ButtonBase)(({ theme }) => ({
 
 const AddButton = () => {
   return (
-    <RoundedButton>
-      <AddIcon />
-    </RoundedButton>
+    <Link to="/blogs/add">
+      <RoundedButton>
+        <AddIcon />
+      </RoundedButton>
+    </Link>
   );
 };
 

@@ -32,7 +32,7 @@ const BlogList = () => {
     <InfiniteScroll
       queryOptions={{
         queryFn: getBlogs,
-        queryKey: ["blogs"],
+        queryKey: "blogs",
         getNextPageParam: (lastPage, all) => {
           const { nextCursor } = lastPage.blogs;
           if (nextCursor == undefined) {

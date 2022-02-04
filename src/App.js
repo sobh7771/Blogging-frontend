@@ -9,6 +9,7 @@ import Header from "./components/Header";
 import AuthContextProvider from "./contexts/AuthContext";
 import SignInPage from "./pages/SignIn";
 import SignUpPage from "./pages/SignUp";
+import AddBlogPage from "./pages/AddBlog";
 
 const queryClient = new QueryClient({
   defaultOptions: { queries: { refetchOnWindowFocus: false } },
@@ -22,9 +23,10 @@ function App() {
           <Header />
           <Container maxWidth="md">
             <Routes>
+              <Route path="/" element={<HomePage />} />;
               <Route path="/account/sign-in" element={<SignInPage />} />
               <Route path="/account/sign-up" element={<SignUpPage />} />
-              <Route path="/" element={<HomePage />} />;
+              <Route path="/blogs/add" element={<AddBlogPage />} />
             </Routes>
           </Container>
         </AuthContextProvider>

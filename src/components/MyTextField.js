@@ -3,7 +3,7 @@ import { useField } from "formik";
 import React from "react";
 
 const MyTextField = (props) => {
-  const [field, meta, helpers] = useField(props);
+  const [field, meta, helpers] = useField(props.name);
   return (
     <TextField
       margin="normal"
@@ -13,6 +13,7 @@ const MyTextField = (props) => {
       {...field}
       error={meta.error && meta.touched}
       helperText={meta.error}
+      variant="filled"
     />
   );
 };
