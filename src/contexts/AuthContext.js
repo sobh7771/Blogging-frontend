@@ -36,6 +36,15 @@ const Logout = gql`
   }
 `;
 
+const Signup = gql`
+  mutation Signup($name: String!, $email: String!, $password: String!) {
+    signup(name: $name, email: $email, password: $password) {
+      _id
+      name
+    }
+  }
+`;
+
 export const AuthContext = React.createContext(defaultValue);
 
 function AuthContextProvider({ children }) {
@@ -61,7 +70,23 @@ function AuthContextProvider({ children }) {
     }
   }, []);
 
-  const signup = async (values) => {};
+  const signup = async (user) => {
+    try {
+      const data = await request("/graphql", Signup, user);
+      setUser({ isSignedIn: true, user: data.signup });
+      navigate("/");
+
+      toast.success(
+        <>
+          Thanks, <b>{data.signup.name}</b> for signing in.
+        </>
+      );
+    } catch (e) {
+      if (e.response.errors[0].path.includes("signup")) {
+        toast.error("Email in use");
+      }
+    }
+  };
 
   const login = async (user) => {
     try {
@@ -87,7 +112,7 @@ function AuthContextProvider({ children }) {
     navigate("/");
   };
 
-  const value = useMemo(() => ({ user, login, logout }), [user]);
+  const value = useMemo(() => ({ user, login, logout, signup }), [user]);
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }

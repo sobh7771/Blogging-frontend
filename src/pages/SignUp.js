@@ -17,20 +17,21 @@ import { AuthContext } from "../contexts/AuthContext";
 import { Link } from "react-router-dom";
 
 let schema = yup.object().shape({
+  name: yup.string().required(),
   email: yup.string().email().required(),
   password: yup.string().required().min(8),
 });
 
-export default function SignIn() {
-  const { login } = useContext(AuthContext);
+export default function SignUp() {
+  const { signup } = useContext(AuthContext);
 
   const handleSubmit = async (values) => {
-    login(values);
+    signup(values);
   };
 
   return (
     <Formik
-      initialValues={{ email: "", password: "" }}
+      initialValues={{ name: "", email: "", password: "" }}
       onSubmit={handleSubmit}
       validationSchema={schema}>
       {({ handleSubmit }) => (
@@ -46,7 +47,7 @@ export default function SignIn() {
               <LockOutlinedIcon />
             </Avatar>
             <Typography component="h1" variant="h5">
-              Sign in
+              Sign up
             </Typography>
             <Box
               component="form"
@@ -54,11 +55,16 @@ export default function SignIn() {
               noValidate
               sx={{ mt: 1 }}>
               <MyTextField
+                id="name"
+                label="Name"
+                name="name"
+                autoComplete="name"
+              />
+              <MyTextField
                 id="email"
                 label="Email Address"
                 name="email"
                 autoComplete="email"
-                autoFocus
               />
               <MyTextField
                 name="password"
@@ -72,14 +78,14 @@ export default function SignIn() {
                 fullWidth
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}>
-                Sign In
+                Sign Up
               </Button>
               <Grid container>
                 <Grid item xs></Grid>
                 <Grid item>
-                  <Link to="/account/sign-up">
+                  <Link to="/account/sign-in">
                     <MuiLink variant="body2">
-                      {"Don't have an account? Sign Up"}
+                      {"Already have an account? Sign In"}
                     </MuiLink>
                   </Link>
                 </Grid>
