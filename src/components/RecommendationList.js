@@ -1,5 +1,5 @@
 import React from "react";
-import { Grid } from "@mui/material";
+import { Grid, Typography } from "@mui/material";
 import request, { gql } from "graphql-request";
 
 import Recommendation from "./Recommendation";
@@ -31,14 +31,19 @@ const RecommendationList = () => {
   }
 
   return (
-    <Grid container direction={"column"} spacing={2}>
-      {data.recommendations.map((recommendation) => (
-        <Recommendation
-          key={recommendation._id}
-          recommendation={recommendation}
-        />
-      ))}
-    </Grid>
+    <>
+      <Typography variant="h6" mb={2}>
+        Suggestions for you
+      </Typography>
+      <Grid container direction="column" spacing={2}>
+        {data.recommendations.map((recommendation) => (
+          <Recommendation
+            key={recommendation._id}
+            recommendation={recommendation}
+          />
+        ))}
+      </Grid>
+    </>
   );
 };
 

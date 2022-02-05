@@ -3,7 +3,7 @@ import { useField } from "formik";
 import React from "react";
 
 const MyTextField = (props) => {
-  const [field, meta, helpers] = useField(props.name);
+  const [field, meta, helpers] = useField(props);
   return (
     <TextField
       margin="normal"

@@ -4,7 +4,7 @@ import { useInfiniteQuery } from "react-query";
 import { Box, CircularProgress, Grid } from "@mui/material";
 import LoadingButton from "@mui/lab/LoadingButton";
 
-import ProgressBar from "./ProgrssBar";
+import ProgressBar from "./ProgressBar";
 
 function InfiniteScroll({ children, queryOptions }) {
   const {

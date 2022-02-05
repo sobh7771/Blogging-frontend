@@ -22,7 +22,7 @@ function ProgressBar() {
         margin: "auto",
         zIndex: 10,
       }}>
-      <LinearProgress />
+      <LinearProgress color="secondary" />
     </div>,
     document.getElementById("progress-bar")
   );

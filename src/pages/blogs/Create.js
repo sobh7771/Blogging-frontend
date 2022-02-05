@@ -1,20 +1,10 @@
 import React from "react";
 import SendIcon from "@mui/icons-material/Send";
-import {
-  Container,
-  Avatar,
-  Button,
-  Link as MuiLink,
-  Grid,
-  Box,
-  Typography,
-  TextareaAutosize,
-  TextField,
-} from "@mui/material";
+import { Container, Box, TextField } from "@mui/material";
 import { Formik } from "formik";
 import * as yup from "yup";
 
-import MyTextField from "../components/MyTextField";
+import MyTextField from "../../components/MyTextField";
 import { gql } from "graphql-request";
 import { request } from "graphql-request";
 import { useMutation, useQueryClient } from "react-query";
@@ -37,14 +27,15 @@ const AddBlog = gql`
 
 const addBlog = (blog) => request("/graphql", AddBlog, blog);
 
-export default function SignUp() {
+function BlogCreate() {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   const { isLoading, isError, mutate } = useMutation(addBlog);
   const handleSubmit = async (values) => {
     mutate(values, {
-      onSuccess() {
-        queryClient.invalidateQueries("blogs");
+      async onSuccess() {
+        await queryClient.refetchQueries("blogs", { throwOnError: true });
+        // console.log("Called!!!!");
         navigate("/");
       },
     });
@@ -107,3 +98,5 @@ export default function SignUp() {
     </Formik>
   );
 }
+
+export default BlogCreate;

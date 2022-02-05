@@ -16,7 +16,7 @@ const RoundedButton = styled(ButtonBase)(({ theme }) => ({
 
 const AddButton = () => {
   return (
-    <Link to="/blogs/add">
+    <Link to="/blogs/create">
       <RoundedButton>
         <AddIcon />
       </RoundedButton>

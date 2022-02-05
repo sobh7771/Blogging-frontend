@@ -13,10 +13,12 @@ import { red } from "@mui/material/colors";
 import ShareIcon from "@mui/icons-material/Share";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import { Grid } from "@mui/material";
+import { Button, Grid, Stack } from "@mui/material";
 import moment from "moment";
 import { Link } from "react-router-dom";
 import AddToFavorite from "./AddToFavorite";
+import MyPopover from "./MyPopover";
+import { Delete, Edit } from "@mui/icons-material";
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
@@ -30,11 +32,20 @@ const ExpandMore = styled((props) => {
 }));
 
 function Blog({ blog }) {
-  const { _id, title, body, createdAt, author } = blog;
+  const { _id, title, body, createdAt, author, img } = blog;
   const [expanded, setExpanded] = React.useState(false);
+  const [anchorEl, setAnchorEl] = React.useState(null);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
+  };
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
   };
 
   return (
@@ -49,19 +60,33 @@ function Blog({ blog }) {
             </Link>
           }
           action={
-            <IconButton aria-label="settings">
+            <IconButton aria-label="settings" onClick={handleClick}>
               <MoreVertIcon />
             </IconButton>
           }
           title={<Link to={`/profile/${author._id}`}>{author.name}</Link>}
           subheader={moment(createdAt).fromNow()}
         />
-        <CardMedia
-          component="img"
-          height="194"
-          image="/static/images/cards/paella.jpg"
-          alt="Paella dish"
-        />
+
+        <div style={{ position: "relative" }}>
+          <MyPopover
+            open={!!anchorEl}
+            onClose={handleClose}
+            anchorEl={anchorEl}>
+            <Stack padding={2} spacing={2}>
+              <Button color="secondary" startIcon={<Edit />}>
+                <Link to={`/blogs/${_id}/edit`}>Edit Post</Link>
+              </Button>
+              <Button
+                variant="contained"
+                color="warning"
+                startIcon={<Delete />}>
+                Delete Post
+              </Button>
+            </Stack>
+          </MyPopover>
+        </div>
+        <CardMedia component="img" height="194" image={img} />
         <CardContent>
           <Typography variant="h4">{title}</Typography>
         </CardContent>
