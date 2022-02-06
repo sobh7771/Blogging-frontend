@@ -16,9 +16,13 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { Button, Grid, Stack } from "@mui/material";
 import moment from "moment";
 import { Link } from "react-router-dom";
+import { Delete, Edit } from "@mui/icons-material";
+
 import AddToFavorite from "./AddToFavorite";
 import MyPopover from "./MyPopover";
-import { Delete, Edit } from "@mui/icons-material";
+import MyModal from "./MyModal";
+import { AuthContext } from "../contexts/AuthContext";
+import DeleteBlogApproval from "./DeleteBlogApproval";
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
@@ -35,6 +39,8 @@ function Blog({ blog }) {
   const { _id, title, body, createdAt, author, img } = blog;
   const [expanded, setExpanded] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const { user } = React.useContext(AuthContext);
+  const [open, setOpen] = React.useState(false);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -46,6 +52,10 @@ function Blog({ blog }) {
 
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  const handleModalClose = () => {
+    setOpen(false);
   };
 
   return (
@@ -69,22 +79,25 @@ function Blog({ blog }) {
         />
 
         <div style={{ position: "relative" }}>
-          <MyPopover
-            open={!!anchorEl}
-            onClose={handleClose}
-            anchorEl={anchorEl}>
-            <Stack padding={2} spacing={2}>
-              <Button color="secondary" startIcon={<Edit />}>
-                <Link to={`/blogs/${_id}/edit`}>Edit Post</Link>
-              </Button>
-              <Button
-                variant="contained"
-                color="warning"
-                startIcon={<Delete />}>
-                Delete Post
-              </Button>
-            </Stack>
-          </MyPopover>
+          {user.isSignedIn && user.user._id === author._id && (
+            <MyPopover
+              open={!!anchorEl}
+              onClose={handleClose}
+              anchorEl={anchorEl}>
+              <Stack padding={2} spacing={2}>
+                <Button color="secondary" startIcon={<Edit />}>
+                  <Link to={`/blogs/${_id}/edit`}>Edit Post</Link>
+                </Button>
+                <Button
+                  onClick={() => setOpen(true)}
+                  variant="contained"
+                  color="warning"
+                  startIcon={<Delete />}>
+                  Delete Post
+                </Button>
+              </Stack>
+            </MyPopover>
+          )}
         </div>
         <CardMedia component="img" height="194" image={img} />
         <CardContent>
@@ -109,6 +122,10 @@ function Blog({ blog }) {
           </CardContent>
         </Collapse>
       </Card>
+
+      <MyModal open={open} onClose={handleModalClose}>
+        <DeleteBlogApproval onClose={handleModalClose} blogId={_id} />
+      </MyModal>
     </Grid>
   );
 }
