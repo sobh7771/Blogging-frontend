@@ -31,6 +31,7 @@ const getProfileBlogs = ({ queryKey, pageParam }) =>
 
 const ProfileTimeline = () => {
   const { id } = useParams();
+
   const queryOptions = {
     queryFn: getProfileBlogs,
     queryKey: ["profileTimeline", id],
@@ -42,6 +43,7 @@ const ProfileTimeline = () => {
       return nextCursor;
     },
   };
+
   return (
     <InfiniteScroll queryOptions={queryOptions}>
       {({ data }) =>

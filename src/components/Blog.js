@@ -73,12 +73,12 @@ function Blog({ blog }) {
               <MoreVertIcon />
             </IconButton>
           }
-          title={<Link to={`/profile/${author._id}`}>{author.name}</Link>}
+          title={<Link to={`/profile/${author.id}`}>{author.name}</Link>}
           subheader={moment(createdAt).fromNow()}
         />
 
         <div style={{ position: "relative" }}>
-          {user.isSignedIn && user.user._id === author.id && (
+          {user && user._id === author.id && (
             <MyPopover
               open={!!anchorEl}
               onClose={handleClose}

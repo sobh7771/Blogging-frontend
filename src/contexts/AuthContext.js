@@ -1,8 +1,10 @@
 import { gql, request } from "graphql-request";
 import React, { useMemo, useState, useEffect } from "react";
-import { useQueryClient } from "react-query";
+import { useQuery, useQueryClient } from "react-query";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+
+import ProgressBar from "../components/ProgressBar";
 
 const defaultState = {
   isSignedIn: null,
@@ -25,6 +27,10 @@ const Login = gql`
     login(email: $email, password: $password) {
       _id
       name
+      following {
+        _id
+        name
+      }
     }
   }
 `;
@@ -42,40 +48,39 @@ const Signup = gql`
     signup(name: $name, email: $email, password: $password) {
       _id
       name
+      following {
+        _id
+        name
+      }
     }
   }
 `;
 
+const GetCurrentViewer = gql`
+  query Viewer {
+    viewer {
+      _id
+      following {
+        _id
+        name
+      }
+    }
+  }
+`;
+
+const getCurrentViewer = () => request("/graphql", GetCurrentViewer);
+
 export const AuthContext = React.createContext(defaultValue);
 
 function AuthContextProvider({ children }) {
-  const [user, setUser] = useState(defaultState);
+  const { isLoading, data } = useQuery("currentViewer", getCurrentViewer);
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-
-  useEffect(async () => {
-    const data = await request(
-      "/graphql",
-      gql`
-        query Viewer {
-          viewer {
-            _id
-          }
-        }
-      `
-    );
-
-    if (!data.viewer) {
-      setUser({ isSignedIn: false, user: null });
-    } else {
-      setUser({ isSignedIn: true, user: data.viewer });
-    }
-  }, []);
 
   const signup = async (user) => {
     try {
       const data = await request("/graphql", Signup, user);
-      setUser({ isSignedIn: true, user: data.signup });
+      await queryClient.refetchQueries("currentViewer");
       navigate("/");
 
       toast.success(
@@ -93,7 +98,7 @@ function AuthContextProvider({ children }) {
   const login = async (user) => {
     try {
       const data = await request("/graphql", Login, user);
-      setUser({ isSignedIn: true, user: data.login });
+      await queryClient.refetchQueries("currentViewer");
       navigate("/");
 
       toast.success(
@@ -109,13 +114,22 @@ function AuthContextProvider({ children }) {
   };
 
   const logout = async () => {
-    await request("/graphql", Logout);
-    await queryClient.refetchQueries("recommendations");
-    setUser({ isSignedIn: false, user: null });
+    await Promise.all([
+      request("/graphql", Logout),
+      queryClient.refetchQueries("currentViewer"),
+      queryClient.refetchQueries("recommendations"),
+    ]);
     navigate("/");
   };
 
-  const value = useMemo(() => ({ user, login, logout, signup }), [user]);
+  const value = useMemo(
+    () => ({ user: data?.viewer, login, logout, signup }),
+    [data?.viewer]
+  );
+
+  if (isLoading) {
+    return <ProgressBar />;
+  }
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }

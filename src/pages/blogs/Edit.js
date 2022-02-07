@@ -64,6 +64,7 @@ function BlogEdit() {
     getBlogById
   );
   const [open, setOpen] = React.useState(false);
+
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
@@ -158,7 +159,7 @@ function BlogEdit() {
               </Box>
             </Container>
             <MyModal onClose={handleClose} open={open}>
-              <ImageUpload />
+              <ImageUpload onClose={handleClose} />
             </MyModal>
           </>
         )}

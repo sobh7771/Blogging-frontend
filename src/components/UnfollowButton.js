@@ -5,18 +5,18 @@ import React from "react";
 import { useMutation, useQueryClient } from "react-query";
 import { toast } from "react-toastify";
 
-const Follow = gql`
-  mutation Follow($id: ID!) {
-    follow(id: $id) {
+const Unfollow = gql`
+  mutation Unfollow($id: ID!) {
+    unfollow(id: $id) {
       id
     }
   }
 `;
 
-const follow = (id) => request("/graphql", Follow, { id });
+const unfollow = (id) => request("/graphql", Unfollow, { id });
 
-const FollowButton = ({ id }) => {
-  const { isLoading, mutate, isError } = useMutation(follow);
+const UnfollowButton = ({ id }) => {
+  const { isLoading, mutate, isError } = useMutation(unfollow);
   const queryClient = useQueryClient();
 
   const handleClick = () => {
@@ -31,15 +31,15 @@ const FollowButton = ({ id }) => {
 
   if (isError) {
     toast.error("Something went wrong, Please try again.", {
-      toastId: "follow/error",
+      toastId: "unfollow/error",
     });
   }
 
   return (
-    <LoadingButton loading={isLoading} onClick={handleClick}>
-      Follow
+    <LoadingButton onClick={handleClick} loading={isLoading}>
+      Unfollow
     </LoadingButton>
   );
 };
 
-export default FollowButton;
+export default UnfollowButton;

@@ -1,10 +1,9 @@
 import React, { useEffect } from "react";
 import { useVisible } from "react-hooks-visible";
 import { useInfiniteQuery } from "react-query";
-import { Box, CircularProgress, Grid } from "@mui/material";
+import { Box, CircularProgress, Grid, LinearProgress } from "@mui/material";
 import LoadingButton from "@mui/lab/LoadingButton";
-
-import ProgressBar from "./ProgressBar";
+import { toast } from "react-toastify";
 
 function InfiniteScroll({ children, queryOptions }) {
   const {
@@ -26,43 +25,38 @@ function InfiniteScroll({ children, queryOptions }) {
   }, [isVisible]);
 
   if (isLoading) {
-    return <ProgressBar />;
+    return <LinearProgress />;
   }
 
-  // if (isError && error.response.errors[0].message === "Unauthorized!") {
-  //   return null;
-  // }
-
   if (isError) {
-    console.log(error.response.errors[0].message);
-    return <div>Something went wrong!</div>;
+    // console.log(error.response.errors[0].message);
+    toast.error("Something went wrong, Please try again.");
+    return;
   }
 
   return (
-    <>
-      <Grid item container md={7} spacing={4} direction="column">
-        {children({ data })}
-        <div ref={targetRef}></div>
-        <Grid item>
-          {isFetchingNextPage ? (
-            <div style={{ textAlign: "center" }}>
-              <CircularProgress />
-            </div>
-          ) : (
-            <Box mb={4}>
-              <LoadingButton
-                fullWidth
-                onClick={() => fetchNextPage()}
-                loading={isFetchingNextPage}
-                variant="outlined"
-                disabled={!hasNextPage}>
-                Load more
-              </LoadingButton>
-            </Box>
-          )}
-        </Grid>
+    <Grid item container md={7} spacing={4} direction="column">
+      {children({ data })}
+      <div ref={targetRef}></div>
+      <Grid item>
+        {isFetchingNextPage ? (
+          <div style={{ textAlign: "center" }}>
+            <CircularProgress />
+          </div>
+        ) : (
+          <Box mb={4}>
+            <LoadingButton
+              fullWidth
+              onClick={() => fetchNextPage()}
+              loading={isFetchingNextPage}
+              variant="outlined"
+              disabled={!hasNextPage}>
+              Load more
+            </LoadingButton>
+          </Box>
+        )}
       </Grid>
-    </>
+    </Grid>
   );
 }
 

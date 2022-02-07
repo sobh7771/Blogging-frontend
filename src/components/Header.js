@@ -33,7 +33,7 @@ export default function Header() {
             <Link to="/">Blogging</Link>
           </Typography>
 
-          {user.isSignedIn ? (
+          {user ? (
             <>
               <LogoutButton />
               <AddButton />

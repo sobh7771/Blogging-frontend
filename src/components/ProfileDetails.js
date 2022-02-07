@@ -1,13 +1,17 @@
-import { Grid, Stack, Typography } from "@mui/material";
+import { Button, Grid, LinearProgress, Stack, Typography } from "@mui/material";
 import { styled } from "@mui/styles";
 import { request } from "graphql-request";
 import { gql } from "graphql-request";
-import React from "react";
+import React, { useContext } from "react";
 import { useQuery } from "react-query";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
+
 import ProfilePic from "./ProfilePic";
-import useMediaQuery from "@mui/material/useMediaQuery";
+import ProgressBar from "./ProgressBar";
+import { AuthContext } from "../contexts/AuthContext";
+import FollowButton from "./FollowButton";
+import UnfollowButton from "./UnfollowButton";
 
 const Wrapper = styled("div")(({ theme }) => ({
   borderBottom: "1px solid",
@@ -33,15 +37,30 @@ const GetProfileDetails = gql`
 const getProfileDetails = ({ queryKey }) =>
   request("/graphql", GetProfileDetails, { id: queryKey[1] });
 
+const renderButton = (targetProfileId, currProfileId, following) => {
+  if (targetProfileId === currProfileId) {
+    return;
+  }
+
+  const exists = following.some((el) => el._id === targetProfileId);
+
+  return exists ? (
+    <UnfollowButton id={targetProfileId} />
+  ) : (
+    <FollowButton id={targetProfileId} />
+  );
+};
+
 const ProfileDetails = () => {
   const { id } = useParams();
   const { isLoading, isError, data } = useQuery(
     ["profileDetails", id],
     getProfileDetails
   );
+  const { user } = useContext(AuthContext);
 
   if (isLoading) {
-    return <>Loading...</>;
+    return <LinearProgress />;
   }
 
   if (isError) {
@@ -59,7 +78,13 @@ const ProfileDetails = () => {
         </Grid>
         <Grid item container direction="column" xs={5}>
           <Grid item mb={2}>
-            <Typography variant="h4">{name}</Typography>
+            <Stack
+              direction="row"
+              alignItems="center"
+              justifyContent="space-between">
+              <Typography variant="h4">{name}</Typography>
+              {renderButton(id, user._id, user.following)}
+            </Stack>
           </Grid>
           <Grid item>
             <Stack direction="row" justifyContent="space-between">

@@ -36,7 +36,6 @@ function BlogCreate() {
     mutate(values, {
       async onSuccess() {
         await queryClient.refetchQueries("blogs", { throwOnError: true });
-        // console.log("Called!!!!");
         navigate("/");
       },
     });

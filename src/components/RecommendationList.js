@@ -32,7 +32,6 @@ const RecommendationList = () => {
   }
 
   if (isError) {
-    console.log(error.response.errors[0].message);
     return <>Something went wrong!</>;
   }
 

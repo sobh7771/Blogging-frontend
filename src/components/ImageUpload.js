@@ -33,7 +33,7 @@ const EditBlog = gql`
   }
 `;
 
-const ImageUpload = () => {
+const ImageUpload = ({ onClose }) => {
   const ref = useRef();
   const [file, setFile] = useState(null);
   const [imgUrl, setImgUrl] = useState("");
@@ -72,7 +72,8 @@ const ImageUpload = () => {
       });
       setLoading(false);
       await queryClient.refetchQueries("blogs");
-      navigate("/");
+      // Close Modal
+      onClose();
     } catch (e) {}
   };
 
