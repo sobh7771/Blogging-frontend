@@ -46,7 +46,11 @@ const BlogList = () => {
     <InfiniteScroll queryOptions={queryOptions}>
       {({ data }) =>
         data.pages.map((page) =>
-          page.blogs.data.map((blog) => <Blog key={blog._id} blog={blog} />)
+          !page.blogs.data.length ? (
+            <div>Nothing to show!</div>
+          ) : (
+            page.blogs.data.map((blog) => <Blog key={blog._id} blog={blog} />)
+          )
         )
       }
     </InfiniteScroll>

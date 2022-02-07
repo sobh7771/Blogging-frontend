@@ -4,6 +4,9 @@ import PhotoCamera from "@mui/icons-material/PhotoCamera";
 import { Button, Grid, IconButton } from "@mui/material";
 import { gql, request } from "graphql-request";
 import { useNavigate, useParams } from "react-router-dom";
+import { Upload } from "@mui/icons-material";
+import { LoadingButton } from "@mui/lab";
+import { useQueryClient } from "react-query";
 
 const Input = styled("input")({
   display: "none",
@@ -36,6 +39,8 @@ const ImageUpload = () => {
   const [imgUrl, setImgUrl] = useState("");
   const { id } = useParams();
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+  const queryClient = useQueryClient();
 
   useEffect(() => {
     file && setImgUrl(URL.createObjectURL(file));
@@ -46,6 +51,7 @@ const ImageUpload = () => {
   };
 
   const handleUpload = async () => {
+    setLoading(true);
     const fd = new FormData();
 
     fd.append("file", file);
@@ -64,7 +70,8 @@ const ImageUpload = () => {
         img: data.secure_url,
         blogId: id,
       });
-
+      setLoading(false);
+      await queryClient.refetchQueries("blogs");
       navigate("/");
     } catch (e) {}
   };
@@ -91,9 +98,13 @@ const ImageUpload = () => {
               </Button>
             </Grid>
             <Grid item>
-              <Button variant="contained" onClick={handleUpload}>
+              <LoadingButton
+                loading={loading}
+                variant="contained"
+                onClick={handleUpload}
+                startIcon={<Upload />}>
                 Upload
-              </Button>
+              </LoadingButton>
             </Grid>
           </Grid>
         </Grid>

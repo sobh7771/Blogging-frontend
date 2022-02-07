@@ -17,16 +17,22 @@ const query = gql`
 const getRecommendations = () => request("/graphql", query);
 
 const RecommendationList = () => {
-  const { isLoading, isError, data } = useQuery(
+  const { isLoading, isError, data, error } = useQuery(
     "recommendations",
-    getRecommendations
+    getRecommendations,
+    { retry: false }
   );
 
   if (isLoading) {
     return <>Loading...</>;
   }
 
+  if (isError && error.response.errors[0].message === "Unauthorized!") {
+    return null;
+  }
+
   if (isError) {
+    console.log(error.response.errors[0].message);
     return <>Something went wrong!</>;
   }
 

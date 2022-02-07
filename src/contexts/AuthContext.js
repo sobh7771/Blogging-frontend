@@ -1,5 +1,6 @@
 import { gql, request } from "graphql-request";
 import React, { useMemo, useState, useEffect } from "react";
+import { useQueryClient } from "react-query";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
@@ -50,6 +51,7 @@ export const AuthContext = React.createContext(defaultValue);
 function AuthContextProvider({ children }) {
   const [user, setUser] = useState(defaultState);
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
   useEffect(async () => {
     const data = await request(
@@ -108,6 +110,7 @@ function AuthContextProvider({ children }) {
 
   const logout = async () => {
     await request("/graphql", Logout);
+    await queryClient.refetchQueries("recommendations");
     setUser({ isSignedIn: false, user: null });
     navigate("/");
   };

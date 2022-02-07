@@ -11,6 +11,7 @@ function InfiniteScroll({ children, queryOptions }) {
     isLoading,
     isError,
     data,
+    error,
     fetchNextPage,
     isFetchingNextPage,
     hasNextPage,
@@ -28,8 +29,13 @@ function InfiniteScroll({ children, queryOptions }) {
     return <ProgressBar />;
   }
 
+  // if (isError && error.response.errors[0].message === "Unauthorized!") {
+  //   return null;
+  // }
+
   if (isError) {
-    return <>Something went wrong!</>;
+    console.log(error.response.errors[0].message);
+    return <div>Something went wrong!</div>;
   }
 
   return (

@@ -12,6 +12,7 @@ import SignInPage from "./pages/SignIn";
 import SignUpPage from "./pages/SignUp";
 import BlogCreatePage from "./pages/blogs/Create";
 import BlogEditPage from "./pages/blogs/Edit";
+import ProfilePage from "./pages/Profile";
 
 const queryClient = new QueryClient({
   defaultOptions: { queries: { refetchOnWindowFocus: false } },
@@ -31,6 +32,7 @@ function App() {
               <Route path="/blogs/create" element={<BlogCreatePage />} />
               <Route path="/blogs/create" element={<BlogCreatePage />} />
               <Route path="/blogs/:id/edit" element={<BlogEditPage />} />
+              <Route path="/profile/:id" element={<ProfilePage />} />
             </Routes>
           </Container>
         </AuthContextProvider>
