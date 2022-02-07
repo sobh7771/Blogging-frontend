@@ -1,5 +1,5 @@
 import React from "react";
-import { Grid, Typography } from "@mui/material";
+import { Grid, LinearProgress, Typography } from "@mui/material";
 import request, { gql } from "graphql-request";
 
 import Recommendation from "./Recommendation";
@@ -24,7 +24,7 @@ const RecommendationList = () => {
   );
 
   if (isLoading) {
-    return <>Loading...</>;
+    return <LinearProgress />;
   }
 
   if (isError && error.response.errors[0].message === "Unauthorized!") {

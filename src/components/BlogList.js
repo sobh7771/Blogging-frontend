@@ -11,7 +11,7 @@ const GetBlogs = gql`
       data {
         _id
         author {
-          _id
+          id
           name
           createdAt
         }

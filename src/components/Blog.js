@@ -10,7 +10,6 @@ import Avatar from "@mui/material/Avatar";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import { red } from "@mui/material/colors";
-import ShareIcon from "@mui/icons-material/Share";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { Button, Grid, Stack } from "@mui/material";
@@ -63,7 +62,7 @@ function Blog({ blog }) {
       <Card>
         <CardHeader
           avatar={
-            <Link to={`/profile/${author._id}`}>
+            <Link to={`/profile/${author.id}`}>
               <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
                 {author.name.charAt(0)}
               </Avatar>
@@ -79,7 +78,7 @@ function Blog({ blog }) {
         />
 
         <div style={{ position: "relative" }}>
-          {user.isSignedIn && user.user._id === author._id && (
+          {user.isSignedIn && user.user._id === author.id && (
             <MyPopover
               open={!!anchorEl}
               onClose={handleClose}
@@ -105,9 +104,6 @@ function Blog({ blog }) {
         </CardContent>
         <CardActions disableSpacing>
           <AddToFavorite />
-          {/* <IconButton aria-label="share">
-            <ShareIcon />
-          </IconButton> */}
           <ExpandMore
             expand={expanded}
             onClick={handleExpandClick}

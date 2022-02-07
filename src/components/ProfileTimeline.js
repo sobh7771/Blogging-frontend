@@ -17,7 +17,7 @@ const query = gql`
           img
           createdAt
           author {
-            _id
+            id
             name
           }
         }
@@ -47,7 +47,6 @@ const ProfileTimeline = () => {
       {({ data }) =>
         data.pages.map((page) =>
           page.profile.blogs.data.map((blog) => {
-            console.log(blog);
             return <Blog blog={blog} key={blog._id} />;
           })
         )

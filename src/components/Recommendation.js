@@ -8,6 +8,7 @@ import {
   Link as MuiLink,
 } from "@mui/material";
 import { Link } from "react-router-dom";
+import FollowButton from "./FollowButton";
 
 const Recommendation = ({ recommendation }) => {
   return (
@@ -28,7 +29,7 @@ const Recommendation = ({ recommendation }) => {
               </Link>
             </Grid>
             <Grid item>
-              <Button>Follow</Button>
+              <FollowButton id={recommendation._id} />
             </Grid>
           </Grid>
         </Box>
