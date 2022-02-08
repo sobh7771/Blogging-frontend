@@ -114,11 +114,10 @@ function AuthContextProvider({ children }) {
   };
 
   const logout = async () => {
-    await Promise.all([
-      request("/graphql", Logout),
-      queryClient.refetchQueries("currentViewer"),
-      queryClient.refetchQueries("recommendations"),
-    ]);
+    await request("/graphql", Logout);
+    await queryClient.refetchQueries("currentViewer");
+    await queryClient.refetchQueries("recommendations");
+
     navigate("/");
   };
 

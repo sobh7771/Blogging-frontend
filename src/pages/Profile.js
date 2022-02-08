@@ -1,13 +1,16 @@
 import React from "react";
+import PrivateRouter from "../components/PrivateRouter";
 import ProfileDetails from "../components/ProfileDetails";
 import ProfileTimeline from "../components/ProfileTimeline";
 
 const ProfilePage = () => {
   return (
-    <div>
-      <ProfileDetails />
-      <ProfileTimeline />
-    </div>
+    <PrivateRouter>
+      <>
+        <ProfileDetails />
+        <ProfileTimeline />
+      </>
+    </PrivateRouter>
   );
 };
 

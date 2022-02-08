@@ -1,4 +1,4 @@
-import { Button, Grid, LinearProgress, Stack, Typography } from "@mui/material";
+import { Grid, LinearProgress, Stack, Typography } from "@mui/material";
 import { styled } from "@mui/styles";
 import { request } from "graphql-request";
 import { gql } from "graphql-request";
@@ -8,7 +8,6 @@ import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 
 import ProfilePic from "./ProfilePic";
-import ProgressBar from "./ProgressBar";
 import { AuthContext } from "../contexts/AuthContext";
 import FollowButton from "./FollowButton";
 import UnfollowButton from "./UnfollowButton";
@@ -58,6 +57,10 @@ const ProfileDetails = () => {
     getProfileDetails
   );
   const { user } = useContext(AuthContext);
+
+  if (!user) {
+    return null;
+  }
 
   if (isLoading) {
     return <LinearProgress />;
