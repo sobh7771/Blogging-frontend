@@ -19,12 +19,14 @@ const FollowButton = ({ id }) => {
   const { isLoading, mutate, isError } = useMutation(follow);
   const queryClient = useQueryClient();
 
+  console.log(id);
+
   const handleClick = () => {
     mutate(id, {
       onSuccess() {
+        queryClient.refetchQueries("currentViewer");
         queryClient.refetchQueries("recommendations");
         queryClient.refetchQueries("profileDetails");
-        queryClient.refetchQueries("currentViewer");
       },
     });
   };

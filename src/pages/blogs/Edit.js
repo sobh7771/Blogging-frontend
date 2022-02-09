@@ -21,6 +21,7 @@ import ProgressBar from "../../components/ProgressBar";
 import MyModal from "../../components/MyModal";
 import NotFound from "../NotFound";
 import ImageUpload from "../../components/ImageUpload";
+import { toast } from "react-toastify";
 
 let schema = yup.object().shape({
   title: yup.string().required(),
@@ -54,10 +55,11 @@ function BlogEdit() {
   const navigate = useNavigate();
   const { isLoading, isError, mutate } = useMutation(editBlog);
   const { id } = useParams();
-  const { data, isLoading: isBlogLoading } = useQuery(
-    ["blogs", id],
-    getBlogById
-  );
+  const {
+    data,
+    isLoading: isBlogLoading,
+    isError: isBlogError,
+  } = useQuery(["blogs", id], getBlogById);
   const [open, setOpen] = React.useState(false);
 
   const handleOpen = () => setOpen(true);
@@ -67,7 +69,14 @@ function BlogEdit() {
     return <ProgressBar />;
   }
 
-  if (!data.blog) {
+  if (isError || isBlogError) {
+    toast.error("Something went wrong, Please try again.", {
+      toastId: "blogEdit/error",
+    });
+    return null;
+  }
+
+  if (!data?.blog) {
     return <NotFound />;
   }
 
