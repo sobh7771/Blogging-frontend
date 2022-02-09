@@ -8,7 +8,7 @@ import { useQuery } from "react-query";
 const query = gql`
   query Recommendations {
     recommendations {
-      _id
+      id
       name
     }
   }
@@ -43,7 +43,7 @@ const RecommendationList = () => {
       <Grid container direction="column" spacing={2}>
         {data.recommendations.map((recommendation) => (
           <Recommendation
-            key={recommendation._id}
+            key={recommendation.id}
             recommendation={recommendation}
           />
         ))}

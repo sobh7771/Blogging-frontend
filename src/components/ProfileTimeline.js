@@ -10,8 +10,8 @@ const query = gql`
     profile(id: $id) {
       blogs(cursor: $cursor) {
         nextCursor
-        data {
-          _id
+        nodes {
+          id
           title
           body
           img
@@ -48,7 +48,7 @@ const ProfileTimeline = () => {
     <InfiniteScroll queryOptions={queryOptions}>
       {({ data }) =>
         data.pages.map((page) =>
-          page.profile.blogs.data.map((blog) => {
+          page.profile.blogs.nodes.map((blog) => {
             return <Blog blog={blog} key={blog._id} />;
           })
         )

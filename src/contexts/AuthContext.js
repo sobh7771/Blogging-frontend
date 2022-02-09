@@ -25,11 +25,13 @@ const defaultValue = {
 const Login = gql`
   mutation Login($email: String!, $password: String!) {
     login(email: $email, password: $password) {
-      _id
+      id
       name
       following {
-        _id
-        name
+        total
+        nodes {
+          id
+        }
       }
     }
   }
@@ -38,7 +40,7 @@ const Login = gql`
 const Logout = gql`
   mutation Logot {
     logout {
-      _id
+      id
     }
   }
 `;
@@ -46,11 +48,13 @@ const Logout = gql`
 const Signup = gql`
   mutation Signup($name: String!, $email: String!, $password: String!) {
     signup(name: $name, email: $email, password: $password) {
-      _id
+      id
       name
       following {
-        _id
-        name
+        total
+        nodes {
+          id
+        }
       }
     }
   }
@@ -59,10 +63,12 @@ const Signup = gql`
 const GetCurrentViewer = gql`
   query Viewer {
     viewer {
-      _id
+      id
       following {
-        _id
-        name
+        total
+        nodes {
+          id
+        }
       }
     }
   }

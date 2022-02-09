@@ -22,10 +22,13 @@ const Wrapper = styled("div")(({ theme }) => ({
 const GetProfileDetails = gql`
   query GetProfileDetails($id: ID) {
     profile(id: $id) {
-      img
       name
-      followersCount
-      followingCount
+      followers {
+        total
+      }
+      following {
+        total
+      }
       blogs {
         total
       }
@@ -41,7 +44,7 @@ const renderButton = (targetProfileId, currProfileId, following) => {
     return;
   }
 
-  const exists = following.some((el) => el._id === targetProfileId);
+  const exists = following.some((el) => el.id === targetProfileId);
 
   return exists ? (
     <UnfollowButton id={targetProfileId} />
@@ -71,22 +74,28 @@ const ProfileDetails = () => {
     return null;
   }
 
-  const { img, name, followersCount, followingCount, blogs } = data.profile;
+  const { img, name, followers, following, blogs } = data.profile;
 
   return (
     <Wrapper>
       <Grid container sx={{ flexDirection: { xs: "column", md: "row" } }}>
-        <Grid item xs={4}>
+        <Grid item xs={12} md={4} sx={{ m: { xs: "0 auto 16px" } }}>
           <ProfilePic pic={img} />
         </Grid>
-        <Grid item container direction="column" xs={5}>
+        <Grid
+          item
+          container
+          direction="column"
+          md={5}
+          xs={9}
+          sx={{ margin: "0 auto" }}>
           <Grid item mb={2}>
             <Stack
               direction="row"
               alignItems="center"
               justifyContent="space-between">
               <Typography variant="h4">{name}</Typography>
-              {renderButton(id, user._id, user.following)}
+              {renderButton(id, user.id, user.following.nodes)}
             </Stack>
           </Grid>
           <Grid item>
@@ -95,10 +104,10 @@ const ProfileDetails = () => {
                 <b>{blogs.total}</b> posts
               </Typography>
               <Typography variant="h6">
-                <b>{followersCount}</b> followers
+                <b>{followers.total}</b> followers
               </Typography>
               <Typography variant="h6">
-                <b>{followingCount}</b> following
+                <b>{following.total}</b> following
               </Typography>
             </Stack>
           </Grid>

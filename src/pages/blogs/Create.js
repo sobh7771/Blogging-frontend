@@ -19,7 +19,7 @@ let schema = yup.object().shape({
 const AddBlog = gql`
   mutation AddBlog($title: String!, $body: String!, $tags: [String]) {
     addBlog(title: $title, body: $body, tags: $tags) {
-      _id
+      id
       tags
     }
   }

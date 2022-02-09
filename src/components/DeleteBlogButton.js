@@ -6,21 +6,21 @@ import React from "react";
 import { useMutation, useQueryClient } from "react-query";
 
 const DeleteBlog = gql`
-  mutation DeleteBlog($blogId: ID) {
-    deleteBlog(blogId: $blogId) {
-      _id
+  mutation DeleteBlog($id: ID!) {
+    deleteBlog(id: $id) {
+      id
     }
   }
 `;
 
-const deleteBlog = (blogId) => request("/graphql", DeleteBlog, { blogId });
+const deleteBlog = (id) => request("/graphql", DeleteBlog, { id });
 
-const DeleteBlogButton = ({ blogId, onClose }) => {
+const DeleteBlogButton = ({ id, onClose }) => {
   const { isLoading, mutate } = useMutation(deleteBlog);
   const queryClient = useQueryClient();
 
   const handleClick = () => {
-    mutate(blogId, {
+    mutate(id, {
       async onSuccess() {
         await queryClient.refetchQueries("blogs");
         onClose();

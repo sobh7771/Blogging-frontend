@@ -17,19 +17,19 @@ const Recommendation = ({ recommendation }) => {
         <Box p={2}>
           <Grid container spacing={2}>
             <Grid item>
-              <Link to={`/profile/${recommendation._id}`}>
+              <Link to={`/profile/${recommendation.id}`}>
                 <Avatar>{recommendation.name.charAt(0)}</Avatar>
               </Link>
             </Grid>
             <Grid item flexGrow={1}>
-              <Link to={`/profile/${recommendation._id}`}>
+              <Link to={`/profile/${recommendation.id}`}>
                 <MuiLink underline="hover" color="ButtonText">
                   {recommendation.name}
                 </MuiLink>
               </Link>
             </Grid>
             <Grid item>
-              <FollowButton id={recommendation._id} />
+              <FollowButton id={recommendation.id} />
             </Grid>
           </Grid>
         </Box>

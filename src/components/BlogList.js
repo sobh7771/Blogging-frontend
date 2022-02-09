@@ -8,8 +8,8 @@ const GetBlogs = gql`
   query Blogs($cursor: Int) {
     blogs(cursor: $cursor) {
       nextCursor
-      data {
-        _id
+      nodes {
+        id
         author {
           id
           name
@@ -46,10 +46,10 @@ const BlogList = () => {
     <InfiniteScroll queryOptions={queryOptions}>
       {({ data }) =>
         data.pages.map((page) =>
-          !page.blogs.data.length ? (
+          !page.blogs.nodes.length ? (
             <div>Nothing to show!</div>
           ) : (
-            page.blogs.data.map((blog) => <Blog key={blog._id} blog={blog} />)
+            page.blogs.nodes.map((blog) => <Blog key={blog.id} blog={blog} />)
           )
         )
       }

@@ -28,14 +28,9 @@ let schema = yup.object().shape({
 });
 
 const EditBlog = gql`
-  mutation EditBlog(
-    $blogId: ID!
-    $title: String
-    $body: String
-    $tags: [String]
-  ) {
-    editBlog(blogId: $blogId, title: $title, body: $body, tags: $tags) {
-      _id
+  mutation EditBlog($id: ID!, $blog: BlogInput!) {
+    editBlog(id: $id, blog: $blog) {
+      id
     }
   }
 `;
@@ -78,7 +73,7 @@ function BlogEdit() {
 
   const handleSubmit = async (values) => {
     mutate(
-      { ...values, blogId: id },
+      { blog: values, id: id },
       {
         async onSuccess() {
           await queryClient.refetchQueries("blogs", { throwOnError: true });

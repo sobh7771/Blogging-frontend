@@ -26,9 +26,9 @@ const Image = styled("img")(({ theme }) => ({
 }));
 
 const EditBlog = gql`
-  mutation EditBlog($blogId: ID!, $img: String) {
-    editBlog(blogId: $blogId, img: $img) {
-      _id
+  mutation EditBlog($id: ID!, $blog: BlogInput!) {
+    editBlog(id: $id, blog: $blog) {
+      id
     }
   }
 `;
@@ -67,8 +67,8 @@ const ImageUpload = ({ onClose }) => {
       ).then((r) => r.json());
 
       await request("/graphql", EditBlog, {
-        img: data.secure_url,
-        blogId: id,
+        id,
+        blog: { img: data.secure_url },
       });
       setLoading(false);
       await queryClient.refetchQueries("blogs");

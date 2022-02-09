@@ -35,7 +35,7 @@ const ExpandMore = styled((props) => {
 }));
 
 function Blog({ blog }) {
-  const { _id, title, body, createdAt, author, img } = blog;
+  const { id, title, body, createdAt, author, img } = blog;
   const [expanded, setExpanded] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const { user } = React.useContext(AuthContext);
@@ -78,14 +78,14 @@ function Blog({ blog }) {
         />
 
         <div style={{ position: "relative" }}>
-          {user && user._id === author.id && (
+          {user && user.id === author.id && (
             <MyPopover
               open={!!anchorEl}
               onClose={handleClose}
               anchorEl={anchorEl}>
               <Stack padding={2} spacing={2}>
                 <Button color="secondary" startIcon={<Edit />}>
-                  <Link to={`/blogs/${_id}/edit`}>Edit Post</Link>
+                  <Link to={`/blogs/${id}/edit`}>Edit Post</Link>
                 </Button>
                 <Button
                   onClick={() => setOpen(true)}
@@ -120,7 +120,7 @@ function Blog({ blog }) {
       </Card>
 
       <MyModal open={open} onClose={handleModalClose}>
-        <DeleteBlogApproval onClose={handleModalClose} blogId={_id} />
+        <DeleteBlogApproval onClose={handleModalClose} id={id} />
       </MyModal>
     </Grid>
   );
