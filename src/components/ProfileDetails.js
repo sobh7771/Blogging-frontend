@@ -11,6 +11,7 @@ import ProfilePic from "./ProfilePic";
 import { AuthContext } from "../contexts/AuthContext";
 import FollowButton from "./FollowButton";
 import UnfollowButton from "./UnfollowButton";
+import NotFound from "../pages/NotFound";
 
 const Wrapper = styled("div")(({ theme }) => ({
   borderBottom: "1px solid",
@@ -61,17 +62,19 @@ const ProfileDetails = () => {
   );
   const { user } = useContext(AuthContext);
 
-  if (!user) {
-    return null;
-  }
-
   if (isLoading) {
     return <LinearProgress />;
   }
 
   if (isError) {
-    toast.error("Something went wrong!");
+    toast.error("Something went wrong, Please try again.", {
+      toastId: "profileDetails/error",
+    });
     return null;
+  }
+
+  if (!user || (!isLoading && !data.profile)) {
+    return <NotFound />;
   }
 
   const { img, name, followers, following, blogs } = data.profile;

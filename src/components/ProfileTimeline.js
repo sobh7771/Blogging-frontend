@@ -36,6 +36,10 @@ const ProfileTimeline = () => {
     queryFn: getProfileBlogs,
     queryKey: ["profileTimeline", id],
     getNextPageParam: (lastPage, all) => {
+      if (!lastPage?.profile) {
+        return;
+      }
+
       const { nextCursor } = lastPage.profile.blogs;
       if (nextCursor == undefined) {
         return;
@@ -47,6 +51,7 @@ const ProfileTimeline = () => {
   return (
     <InfiniteScroll queryOptions={queryOptions}>
       {({ data }) =>
+        !!data.pages[0].profile &&
         data.pages.map((page) =>
           page.profile.blogs.nodes.map((blog) => {
             return <Blog blog={blog} key={blog._id} />;

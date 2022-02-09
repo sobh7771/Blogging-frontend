@@ -30,8 +30,10 @@ function InfiniteScroll({ children, queryOptions }) {
 
   if (isError) {
     // console.log(error.response.errors[0].message);
-    toast.error("Something went wrong, Please try again.");
-    return;
+    toast.error("Something went wrong, Please try again.", {
+      toastId: "infiniteScroll/error",
+    });
+    return null;
   }
 
   return (
